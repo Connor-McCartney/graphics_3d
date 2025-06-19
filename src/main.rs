@@ -84,10 +84,7 @@ fn raycast(player_angle: f32, player_x: f32, player_y: f32) -> Vec<[u8; 4]> {
         } else {
             (map_pos_x - player_x / 32.0 + (1.0 - step_x) / 2.0) / ray_dir_x
         };
-        //if perp_wall_dist <= 0.0 {
-        //    continue; // with collision detection shouldn't be needed
-        //}
-
+        
         let line_height = (WINDOW_HEIGHT as f32 / perp_wall_dist) as i32;
         let draw_start = (-line_height / 2 + WINDOW_HEIGHT / 2).max(0);
         let draw_end = (line_height / 2 + WINDOW_HEIGHT / 2).min(WINDOW_HEIGHT - 1);
@@ -107,12 +104,7 @@ fn raycast(player_angle: f32, player_x: f32, player_y: f32) -> Vec<[u8; 4]> {
 fn is_wall_at(x: f32, y: f32) -> bool {
     let map_x = (x / 32.0) as i32;
     let map_y = (y / 32.0) as i32;
-
-    if map_x < 0 || map_x >= MAP_WIDTH || map_y < 0 || map_y >= MAP_HEIGHT {
-        return true; // outside map = wall
-    }
-
-    MAP[(map_y * MAP_WIDTH + map_x) as usize] != 0
+    return MAP[(map_y * MAP_WIDTH + map_x) as usize] != 0;
 }
 
 fn main() {
@@ -132,7 +124,7 @@ fn main() {
 
     while !rl.window_should_close() {
         let mouse_delta = rl.get_mouse_delta();
-        player_angle += mouse_delta.x * 0.1; // Adjust sensitivity here
+        player_angle += mouse_delta.x * 0.1;
         if rl.is_key_down(KEY_Q) {
             break;
         }
@@ -168,7 +160,7 @@ fn main() {
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(Color::BLACK);
 
-        // FOV triangliel
+        // FOV triangle
         let ox = WINDOW_WIDTH as f32 + 10.0;
         let tip = Vector2 { x: ox + player_x, y: player_y };
         let angle_rad = to_rad(player_angle);
